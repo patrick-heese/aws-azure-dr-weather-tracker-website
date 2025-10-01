@@ -1,7 +1,7 @@
 # AWS/Azure DR Weather Tracker Website
 A multi-cloud, static **Weather Tracker** website deployed to **AWS (primary)** with **manual DNS failover** to **Azure (secondary)**. The app is fronted by **Amazon CloudFront** for HTTPS and performance. In a DR scenario, DNS shifts traffic to an **Azure Storage Static Website** endpoint served over **HTTP** (by design for this project’s cost constraints).  
 
-> **Production note:** For HTTPS on Azure during failover, use **Azure Front Door** or Azure CDN with managed TLS.  
+**Production note:** For HTTPS on Azure during failover, use **Azure Front Door** or Azure CDN with managed TLS.  
 
 ## Architecture Overview
 ![Architecture Diagram](assets/architecture-diagram.png)  
@@ -69,40 +69,39 @@ A multi-cloud, static **Weather Tracker** website deployed to **AWS (primary)** 
 9. Edit variables in `terraform.tfvars` and/or `variables.tf` to customize the deployment.  
 
 10. Navigate to the `terraform` folder and deploy:  
-   ```bash
-   cd terraform
-   terraform init
-   terraform plan # Optional, but recommended.
-   terraform apply
-   ```  
+    ```bash
+   	cd terraform
+  	terraform init
+   	terraform plan # Optional, but recommended.
+   	terraform apply
+   	```
+    **Note:** The configuration re-applies Azure custom-domain mapping on each `terraform apply`, ensuring Azure serves your custom host during DR.    
 
 11. **To manually toggle DR (Azure)**:
     - In `terraform.tfvars`, set:
-      ```hcl
-      primary_weight = "0"
-      secondary_weight = "100"
-      ```
+        ```hcl
+      	primary_weight = "0"
+      	secondary_weight = "100"
+      	```
     - Apply:
-      ```bash
-      terraform apply
-      ```
+    	```bash
+      	terraform apply
+     	```
     - After ~60s DNS TTL, visit **`http://www.<your-domain>/`** (HTTP on DR is expected).  
 
 12. **To fail back (AWS)**:
     - In `terraform.tfvars`, set:
-      ```hcl
-      primary_weight = "100"
-      secondary_weight = "0"
-      ```
+    	```hcl
+      	primary_weight = "100"
+      	secondary_weight = "0"
+      	```
     - Apply:
-      ```bash
-      terraform apply
-      ```
+      	```bash
+      	terraform apply
+      	```
     - After ~60s DNS TTL, visit **`https://www.<your-domain>/`**.  
 
 **Note:** Ensure the AWS CLI is configured (aws configure) with credentials that have sufficient permissions to manage **S3**, **CloudFront**, **Route 53**, and **AWS Certificate Manager**. Ensure the Azure CLI is configured (az login) with credentials that have sufficient permissions to manage **Resource Groups** and **Storage Accounts**.  
-
-> The configuration re-applies Azure custom-domain mapping on each `terraform apply`, ensuring Azure serves your custom host during DR.  
 
 ## How to Use
 1. **Deploy the infrastructure** using Terraform.  
