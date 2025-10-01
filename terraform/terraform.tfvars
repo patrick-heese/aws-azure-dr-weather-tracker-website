@@ -12,7 +12,7 @@ website_content_path = "../src"
 # -----------------------------
 aws_region            = "us-east-1"
 s3_bucket_name_prefix = "weather-tracker-app-bucket"
-acm_certificate_arn   = "<ARN of Certificate in AWS Certificate Manager"
+acm_certificate_arn   = "<ARN of Certificate in AWS Certificate Manager>"
 
 # -----------------------------
 # Azure
