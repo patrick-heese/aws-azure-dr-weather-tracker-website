@@ -20,6 +20,10 @@ locals {
     xml  = "application/xml"
     map  = "application/json"
   }
+
+  azure_tags = {
+    Project = var.project_name
+  }
 }
 
 # -----------------------------
@@ -222,6 +226,7 @@ locals {
 resource "azurerm_resource_group" "rg" {
   name     = var.azure_resource_group_name
   location = var.azure_location
+  tags     = local.azure_tags
 }
 
 resource "azurerm_storage_account" "storage" {
@@ -235,6 +240,8 @@ resource "azurerm_storage_account" "storage" {
 
   # DR will be HTTP-only; allow HTTP (v4 arg name)
   https_traffic_only_enabled = false
+
+  tags = local.azure_tags
 }
 
 resource "azurerm_storage_account_static_website" "site" {

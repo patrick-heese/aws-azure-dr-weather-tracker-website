@@ -28,3 +28,8 @@ storage_account_name_prefix = "weatherweb"
 # -----------------------------
 primary_weight   = "100"
 secondary_weight = "0"
+
+# -----------------------------
+# Inputs: Project name
+# -----------------------------
+project_name = "aws-azure-dr-weather-tracker-website"

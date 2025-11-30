@@ -96,3 +96,11 @@ variable "secondary_weight" {
   type        = number
   default     = 0
 }
+
+# -----------------------------
+# Inputs: Project name
+# -----------------------------
+variable "project_name" {
+  description = "Project tag value for all resources"
+  type        = string
+}
